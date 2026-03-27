@@ -13,7 +13,6 @@ public class LoginResponse
     public string Rol { get; set; } = string.Empty;
     public DateTime Expiracion { get; set; }
 }
-
 public class RegistrarPagoRequest
 {
     public string NumeroWhatsapp { get; set; } = string.Empty;
@@ -25,7 +24,7 @@ public class RegistrarPagoRequest
     public string? NroOperacion { get; set; }
     public decimal? Monto { get; set; }
     public string? FechaOperacion { get; set; }
-    public string? MensajeOriginal { get; set; }
+    public string? MensajeOriginal { get; set; }  // ← agrega esta línea
 }
 
 public class ActualizarEstadoRequest

@@ -54,7 +54,7 @@ public class PagosController : ControllerBase
             Banco = req.Banco,
             NroOperacion = req.NroOperacion,
             Monto = req.Monto,
-            FechaOperacion = req.FechaOperacion,
+            FechaOperacion = DateTime.TryParse(req.FechaOperacion, out var fecha) ? fecha : (DateTime?)null,
             MensajeOriginal = req.MensajeOriginal,
             Estado = "PENDIENTE",
             FechaRegistro = DateTime.Now,

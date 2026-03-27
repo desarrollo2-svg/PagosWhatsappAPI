@@ -11,7 +11,7 @@ public class PagoRecibido
     public string? Banco { get; set; }
     public string? NroOperacion { get; set; }
     public decimal? Monto { get; set; }
-    public string? FechaOperacion { get; set; }
+    public DateTime? FechaOperacion { get; set; }
     public string Estado { get; set; } = "PENDIENTE";
     public string? MensajeOriginal { get; set; }
     public DateTime FechaRegistro { get; set; } = DateTime.Now;
