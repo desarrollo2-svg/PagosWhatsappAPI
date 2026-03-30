@@ -77,6 +77,63 @@ public class ClientesController : ControllerBase
         }));
     }
 
+    [HttpGet("validar/{numeroWhatsapp}")]
+    public async Task<IActionResult> ValidarPorTelefono(string numeroWhatsapp)
+    {
+        var cliente = await _db.Clientes
+            .FirstOrDefaultAsync(c => c.NumeroWhatsapp == numeroWhatsapp && c.Activo);
+
+        if (cliente == null)
+            return Ok(new { existe = false, cliente = (object?)null });
+
+        return Ok(new
+        {
+            existe = true,
+            cliente = new
+            {
+                cliente.Id,
+                cliente.Nombre,
+                cliente.TipoDocumento,
+                cliente.NroDocumento,
+                cliente.NumeroWhatsapp,
+                cliente.Telefono,
+                cliente.Correo
+            }
+        });
+    }
+
+    [HttpPost("registrar")]
+    public async Task<IActionResult> Registrar([FromBody] RegistrarClienteRequest req)
+    {
+        var existe = await _db.Clientes
+            .AnyAsync(c => c.NumeroWhatsapp == req.NumeroWhatsapp);
+
+        if (existe)
+            return BadRequest(ApiResponse<string>.Error("El cliente ya existe"));
+
+        var cliente = new Cliente
+        {
+            TipoDocumento = req.TipoDocumento,
+            NroDocumento = req.NroDocumento,
+            Nombre = req.Nombre,
+            Telefono = req.Telefono,
+            Correo = req.Correo,
+            NumeroWhatsapp = req.NumeroWhatsapp,
+            FechaRegistro = DateTime.Now,
+            Activo = true
+        };
+
+        _db.Clientes.Add(cliente);
+        await _db.SaveChangesAsync();
+
+        return Ok(ApiResponse<object>.Ok(new
+        {
+            cliente.Id,
+            cliente.Nombre,
+            cliente.NumeroWhatsapp
+        }, "Cliente registrado correctamente"));
+    }
+
     [HttpPatch("{id}")]
     public async Task<IActionResult> Actualizar(int id,
         [FromBody] Dictionary<string, string> campos)
