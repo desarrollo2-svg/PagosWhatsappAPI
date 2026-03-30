@@ -77,6 +77,7 @@ public class ClientesController : ControllerBase
         }));
     }
 
+    [AllowAnonymous]
     [HttpGet("validar/{numeroWhatsapp}")]
     public async Task<IActionResult> ValidarPorTelefono(string numeroWhatsapp)
     {
